@@ -4,7 +4,7 @@ cask "font-iosevka-semi-extended-ss14" do
 
   url "https://github.com/probablyian/homebrew-iosevka-semi-extended/releases/download/v#{version}/IosevkaSemiExtendedSS14-#{version}.zip"
   name "Iosevka SemiExtended SS14"
-  desc "Iosevka SS14 (JetBrains Mono style) in the SemiExtended width, as its own font family"
+  desc "Iosevka SS14 (JetBrains Mono style) in the SemiExtended width"
   homepage "https://github.com/probablyian/homebrew-iosevka-semi-extended"
 
   livecheck do
