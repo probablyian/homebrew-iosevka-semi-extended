@@ -1,5 +1,7 @@
 # Iosevka SemiExtended
 
+![Iosevka SemiExtended SS14 specimen](images/hero.png)
+
 [Iosevka](https://github.com/be5invis/Iosevka), unmodified, in the SemiExtended width (548). The release builds ship Normal and Extended only ([be5invis/Iosevka#3320](https://github.com/be5invis/Iosevka/issues/3320)), so this repo builds two release plans in the SemiExtended width and packages each as a Homebrew cask. Each gets its own family name, so `Iosevka` and `Iosevka SS14` stay the standard width and font menus list the SemiExtended builds separately:
 
 | Cask | Family | Built from |
@@ -8,6 +10,13 @@
 | `font-iosevka-semi-extended-ss14` | `Iosevka SemiExtended SS14` | the release `IosevkaSS14` plan (JetBrains Mono style) |
 
 Each has all 9 weights in upright, italic and oblique.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/code-dark.png">
+  <img alt="TypeScript in Iosevka SemiExtended SS14, with ligatures" src="images/code-light.png">
+</picture>
+
+![Character set](images/glyphs.png)
 
 ## Install
 
