@@ -1,0 +1,10 @@
+# The release "Iosevka" plan from build-plans.toml, with only the SemiExtended width.
+# Weights and slopes are left out, so all 9 weights and 3 slopes are built, as in the release.
+[buildPlans.IosevkaSemiExtended]
+family = "Iosevka"
+exportGlyphNames = true
+
+[buildPlans.IosevkaSemiExtended.widths.SemiExtended]
+shape = 548
+menu = 6
+css = "semi-expanded"
