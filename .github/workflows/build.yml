@@ -51,11 +51,7 @@ jobs:
     timeout-minutes: 120
     strategy:
       matrix:
-        include:
-          - plan: IosevkaSemiExtended
-            prefix: Iosevka
-          - plan: IosevkaSS14SemiExtended
-            prefix: IosevkaSS14
+        plan: [IosevkaSemiExtended, IosevkaSemiExtendedSS14]
     steps:
       - uses: actions/checkout@v7
 
@@ -83,22 +79,17 @@ jobs:
       - name: Package
         env:
           PLAN: ${{ matrix.plan }}
-          PREFIX: ${{ matrix.prefix }}
           VERSION: ${{ needs.tag.outputs.version }}
         run: |
           mkdir out
-          for f in "iosevka/dist/$PLAN/TTF/"*.ttf; do
-            name=$(basename "$f")
-            cp "$f" "out/$PREFIX-${name#"$PLAN"-}"
-          done
-          cp iosevka/LICENSE.md out/
-          (cd out && zip -9 "$GITHUB_WORKSPACE/$PREFIX-SemiExtended-$VERSION.zip" ./*)
-          unzip -l "$PREFIX-SemiExtended-$VERSION.zip"
+          cp "iosevka/dist/$PLAN/TTF/"*.ttf iosevka/LICENSE.md out/
+          (cd out && zip -9 "$GITHUB_WORKSPACE/$PLAN-$VERSION.zip" ./*)
+          unzip -l "$PLAN-$VERSION.zip"
 
       - uses: actions/upload-artifact@v7
         with:
           name: zip-${{ matrix.plan }}
-          path: ${{ matrix.prefix }}-SemiExtended-${{ needs.tag.outputs.version }}.zip
+          path: ${{ matrix.plan }}-${{ needs.tag.outputs.version }}.zip
 
   release:
     needs: [tag, build]
@@ -125,8 +116,8 @@ jobs:
             sha=$(shasum -a 256 "dist/$2" | cut -d' ' -f1)
             sed -i -E "s/^  version \".*\"/  version \"$VERSION\"/; s/^  sha256 \".*\"/  sha256 \"$sha\"/" "Casks/$1.rb"
           }
-          bump font-iosevka-semi-extended "Iosevka-SemiExtended-$VERSION.zip"
-          bump font-iosevka-semi-extended-ss14 "IosevkaSS14-SemiExtended-$VERSION.zip"
+          bump font-iosevka-semi-extended "IosevkaSemiExtended-$VERSION.zip"
+          bump font-iosevka-semi-extended-ss14 "IosevkaSemiExtendedSS14-$VERSION.zip"
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

@@ -1,24 +1,29 @@
-# The release "Iosevka" plan from build-plans.toml, with only the SemiExtended width.
-# Weights and slopes are left out, so all 9 weights and 3 slopes are built, as in the release.
+# Each plan is a release plan from Iosevka's build-plans.toml with only one width:
+# glyphs 548 wide (SemiExtended), under its own family name so that "Iosevka" and
+# "Iosevka SS14" stay the standard width. The width's menu value is 5 (Normal) so
+# the family name doesn't get "Semi-Extended" appended a second time.
+# Weights and slopes are left out, so all 9 weights and 3 slopes are built.
+
+# The release "Iosevka" plan.
 [buildPlans.IosevkaSemiExtended]
-family = "Iosevka"
+family = "Iosevka SemiExtended"
 exportGlyphNames = true
 
-[buildPlans.IosevkaSemiExtended.widths.SemiExtended]
+[buildPlans.IosevkaSemiExtended.widths.Normal]
 shape = 548
-menu = 6
+menu = 5
 css = "semi-expanded"
 
-# The release "IosevkaSS14" plan (JetBrains Mono style) from build-plans.toml, with only the SemiExtended width.
-[buildPlans.IosevkaSS14SemiExtended]
-family = "Iosevka SS14"
+# The release "IosevkaSS14" plan (JetBrains Mono style).
+[buildPlans.IosevkaSemiExtendedSS14]
+family = "Iosevka SemiExtended SS14"
 exportGlyphNames = true
 noCvSs = true
 
-[buildPlans.IosevkaSS14SemiExtended.variants]
+[buildPlans.IosevkaSemiExtendedSS14.variants]
 inherits = "ss14"
 
-[buildPlans.IosevkaSS14SemiExtended.widths.SemiExtended]
+[buildPlans.IosevkaSemiExtendedSS14.widths.Normal]
 shape = 548
-menu = 6
+menu = 5
 css = "semi-expanded"

@@ -1,11 +1,11 @@
 # Iosevka SemiExtended
 
-[Iosevka](https://github.com/be5invis/Iosevka), unmodified, in the SemiExtended width (548). The release builds ship Normal and Extended only ([be5invis/Iosevka#3320](https://github.com/be5invis/Iosevka/issues/3320)), so this repo builds two release plans with just the SemiExtended width and packages each as a Homebrew cask:
+[Iosevka](https://github.com/be5invis/Iosevka), unmodified, in the SemiExtended width (548). The release builds ship Normal and Extended only ([be5invis/Iosevka#3320](https://github.com/be5invis/Iosevka/issues/3320)), so this repo builds two release plans in the SemiExtended width and packages each as a Homebrew cask. Each gets its own family name, so `Iosevka` and `Iosevka SS14` stay the standard width and font menus list the SemiExtended builds separately:
 
 | Cask | Family | Built from |
 | --- | --- | --- |
-| `font-iosevka-semi-extended` | `Iosevka Semi-Extended` | the release `Iosevka` plan |
-| `font-iosevka-semi-extended-ss14` | `Iosevka SS14 Semi-Extended` | the release `IosevkaSS14` plan (JetBrains Mono style) |
+| `font-iosevka-semi-extended` | `Iosevka SemiExtended` | the release `Iosevka` plan |
+| `font-iosevka-semi-extended-ss14` | `Iosevka SemiExtended SS14` | the release `IosevkaSS14` plan (JetBrains Mono style) |
 
 Each has all 9 weights in upright, italic and oblique.
 
@@ -19,11 +19,11 @@ brew install --cask probablyian/iosevka-semi-extended/font-iosevka-semi-extended
 brew install --cask probablyian/iosevka-semi-extended/font-iosevka-semi-extended-ss14
 ```
 
-Set the font family to the name in the table, which selects the SemiExtended Regular, Bold and Italic faces. The fonts install next to Homebrew's `font-iosevka` and `font-iosevka-ss14` without clashing. Without Homebrew, download the zip from [Releases](../../releases) and copy the `.ttf` files to `~/Library/Fonts` (macOS) or `~/.local/share/fonts` (Linux, then run `fc-cache -f`).
+Set the font family to the name in the table. The fonts install next to Homebrew's `font-iosevka` and `font-iosevka-ss14` without clashing. Without Homebrew, download the zip from [Releases](../../releases) and copy the `.ttf` files to `~/Library/Fonts` (macOS) or `~/.local/share/fonts` (Linux, then run `fc-cache -f`).
 
 ## Stylistic sets
 
-`Iosevka Semi-Extended` keeps the character variants and stylistic sets (`cv01`–`cv99`, `ss01`–`ss20`), so an editor can pick a style. For JetBrains Mono style (`ss14`):
+`Iosevka SemiExtended` keeps the character variants and stylistic sets (`cv01`–`cv99`, `ss01`–`ss20`), so an editor can pick a style. For JetBrains Mono style (`ss14`):
 
 | App | Setting |
 | --- | --- |
@@ -32,7 +32,7 @@ Set the font family to the name in the table, which selects the SemiExtended Reg
 | VS Code | `"editor.fontLigatures": "'calt', 'ss14'"` |
 | VS Code terminal | `"terminal.integrated.fontLigatures.enabled": true` and `"terminal.integrated.fontLigatures.featureSettings": "'calt', 'ss14'"` |
 
-`Iosevka SS14 Semi-Extended` has the JetBrains Mono style built in and, like the release SS14 fonts, leaves out the `cv` and `ss` switches, so it needs no settings.
+`Iosevka SemiExtended SS14` has the JetBrains Mono style built in and, like the release SS14 fonts, leaves out the `cv` and `ss` switches, so it needs no settings.
 
 ## Updates
 
