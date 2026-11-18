@@ -1,6 +1,6 @@
 cask "font-iosevka-semi-extended" do
   version "34.9.1"
-  sha256 "5481c76ba8d0323185cfdc38cb6ae6055cf4294d26a50efce71dc929a11559f4"
+  sha256 "00e76e0a9a8d5de9c6da4fb7a1b3daca21b337cc0b763beaffb2b16f3fca7de5"
 
   url "https://github.com/probablyian/homebrew-iosevka-semi-extended/releases/download/v#{version}/IosevkaSemiExtended-#{version}.zip"
   name "Iosevka SemiExtended"
