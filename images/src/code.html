@@ -10,7 +10,11 @@ body { background: var(--bg); padding: 0 110px; display: flex; align-items: cent
 .dots b:nth-child(2) { background: #febc2e; }
 .dots b:nth-child(3) { background: #28c840; }
 .title { flex: 1; text-align: center; font-size: 17px; color: var(--dim); margin-right: 60px; }
-pre { font: inherit; font-size: 30px; line-height: 1.62; padding: 26px 0; color: var(--fg); }
+.pane { position: relative; font-family: "Iosevka SemiExtended", monospace; }
+.pane + .pane { border-top: 1px solid var(--line); }
+.pane.ss14 { font-family: "Iosevka SemiExtended SS14", monospace; }
+.tag { position: absolute; top: 16px; right: 28px; font-size: 17px; color: var(--dim); }
+pre { font: inherit; font-size: 32px; line-height: 1.6; padding: 22px 0; color: var(--fg); }
 .l { display: block; padding: 0 36px 0 0; white-space: pre; }
 .l.cur { background: var(--sel); }
 .n { display: inline-block; width: 96px; text-align: right; padding-right: 34px; color: var(--ln); }
@@ -19,6 +23,22 @@ pre { font: inherit; font-size: 30px; line-height: 1.62; padding: 26px 0; color:
 </style>
 <script>if (location.hash === '#light') document.documentElement.className = 'light';</script>
 <div class="win">
-  <div class="bar"><div class="dots"><b></b><b></b><b></b></div><div class="title">cart.ts — Iosevka SemiExtended SS14</div></div>
-<pre><span class="l"><span class="n">1</span><span class="c">// Totals are in cents, so 0.1 + 0.2 never shows up.</span></span><span class="l"><span class="n">2</span><span class="k">import</span> { <span class="t">Item</span> } <span class="k">from</span> <span class="s">"./types"</span>;</span><span class="l"><span class="n">3</span></span><span class="l"><span class="n">4</span><span class="k">export function</span> <span class="f">total</span>(<span class="t">items</span>: <span class="t">Item</span>[], <span class="t">taxRate</span> = <span class="d">0.0825</span>): <span class="t">number</span> {</span><span class="l"><span class="n">5</span>  <span class="k">const</span> subtotal = items.<span class="f">reduce</span>((sum, i) <span class="o">=&gt;</span> sum <span class="o">+</span> i.cents <span class="o">*</span> i.qty, <span class="d">0</span>);</span><span class="l cur"><span class="n">6</span>  <span class="k">if</span> (subtotal <span class="o">&lt;=</span> <span class="d">0</span> <span class="o">||</span> items.length <span class="o">!==</span> <span class="d">1</span> <span class="o">&amp;&amp;</span> taxRate <span class="o">&gt;=</span> <span class="d">1</span>) <span class="k">return</span> <span class="d">0</span>;</span><span class="l"><span class="n">7</span>  <span class="k">return</span> <span class="t">Math</span>.<span class="f">round</span>(subtotal <span class="o">*</span> (<span class="d">1</span> <span class="o">+</span> taxRate));</span><span class="l"><span class="n">8</span>}</span><span class="l"><span class="n">9</span></span><span class="l"><span class="n">10</span><span class="f">console</span>.<span class="f">log</span>(<span class="s">`Total: $${(</span><span class="f">total</span>(cart) <span class="o">/</span> <span class="d">100</span>).<span class="f">toFixed</span>(<span class="d">2</span>)<span class="s">}`</span>);</span></pre>
+  <div class="bar"><div class="dots"><b></b><b></b><b></b></div><div class="title">cart.ts</div></div>
+  <div class="pane" id="stock"><div class="tag">Iosevka SemiExtended</div><pre></pre></div>
+  <div class="pane ss14" id="ss14"><div class="tag">Iosevka SemiExtended SS14</div><pre></pre></div>
 </div>
+<script>
+// {{class:text}} marks a highlighted span; text is HTML.
+const lines = [
+  '{{c:// Totals are in cents.}}',
+  '{{k:export function}} {{f:total}}({{t:items}}: {{t:Item}}[], {{t:taxRate}} = {{d:0.0825}}): {{t:number}} {',
+  '  {{k:if}} (items.length {{o:!==}} {{d:1}} {{o:&amp;&amp;}} taxRate {{o:&gt;=}} {{d:1}}) {{k:return}} {{d:0}};',
+  '  {{k:return}} items.{{f:reduce}}((sum, i) {{o:=&gt;}} sum {{o:+}} i.cents {{o:*}} i.qty, {{d:0}});',
+  '}',
+];
+const cur = 2;
+const html = lines.map((raw, i) =>
+  '<span class="l' + (i === cur ? ' cur' : '') + '"><span class="n">' + (i + 1) + '</span>' +
+  raw.replace(/\{\{(\w):(.*?)\}\}/g, '<span class="$1">$2</span>') + '</span>').join('');
+document.querySelectorAll('.pane pre').forEach(p => p.innerHTML = html);
+</script>

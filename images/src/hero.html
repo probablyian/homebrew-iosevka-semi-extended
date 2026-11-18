@@ -1,21 +1,34 @@
 <!doctype html><meta charset="utf-8"><link rel="stylesheet" href="common.css">
 <style>
 html { background-color: #1d2230; }
-body { background-color: #1d2230; color: #e5e9f0; padding: 84px 100px; position: relative; }
+body { background-color: #1d2230; color: #e5e9f0; padding: 68px 100px; position: relative; font-family: "Iosevka SemiExtended", monospace; }
 .eyebrow { font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: #88c0d0; }
-h1 { font-size: 132px; line-height: 1.02; font-weight: 700; margin-top: 18px; letter-spacing: -.01em; }
+h1 { font-size: 104px; line-height: 1.05; font-weight: 700; margin-top: 14px; letter-spacing: -.01em; }
 h1 span { color: #88c0d0; }
-.sub { font-size: 30px; color: #9aa7bd; margin-top: 22px; }
-.abc { margin-top: 56px; font-size: 54px; line-height: 1.35; color: #d8dee9; }
-.abc i { color: #a3be8c; }
-.weights { position: absolute; left: 100px; right: 100px; bottom: 70px; display: flex; justify-content: space-between; border-top: 1px solid #343c52; padding-top: 28px; }
-.w { font-size: 30px; color: #cfd6e6; text-align: left; }
-.w small { display: block; font-size: 15px; font-weight: 400; color: #8795ad; margin-top: 8px; letter-spacing: .04em; }
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 52px; }
+.card { background: #252b3b; border: 1px solid #343c52; border-radius: 16px; padding: 26px 34px 28px; }
+.card .name { font-size: 26px; font-weight: 700; color: #e5e9f0; }
+.card .note { font-size: 18px; color: #9aa7bd; margin-top: 4px; }
+.card .s { font-size: 56px; line-height: 1.34; color: #d8dee9; margin-top: 16px; white-space: nowrap; }
+.ss14, .ss14 .name, .ss14 .note, .ss14 .s { font-family: "Iosevka SemiExtended SS14", monospace; }
+.weights { position: absolute; left: 100px; right: 100px; bottom: 54px; display: flex; justify-content: space-between; border-top: 1px solid #343c52; padding-top: 22px; }
+.w { font-size: 28px; color: #cfd6e6; }
+.w small { display: block; font-size: 15px; font-weight: 400; color: #8795ad; margin-top: 6px; letter-spacing: .04em; }
 </style>
-<div class="eyebrow">Iosevka · 548 wide · JetBrains Mono style</div>
-<h1>Iosevka<br><span>SemiExtended</span> SS14</h1>
-<div class="sub">The width in between, as its own font family.</div>
-<div class="abc">0123456789 &nbsp;ABCDEFGHIJKLM<br>agjlrty &nbsp;<i>agjlrty</i> &nbsp;NOPQRSTUVWXYZ</div>
+<div class="eyebrow">Iosevka · 548 wide · Homebrew</div>
+<h1><span>Iosevka</span> SemiExtended</h1>
+<div class="cards">
+  <div class="card">
+    <div class="name">Iosevka SemiExtended</div>
+    <div class="note">The release Iosevka design</div>
+    <div class="s">0123456789<br>agjlrty QRWYGK<br>Il1| O0o {}[] -&gt; !=</div>
+  </div>
+  <div class="card ss14">
+    <div class="name">Iosevka SemiExtended SS14</div>
+    <div class="note">JetBrains Mono style</div>
+    <div class="s">0123456789<br>agjlrty QRWYGK<br>Il1| O0o {}[] -&gt; !=</div>
+  </div>
+</div>
 <div class="weights">
   <div class="w" style="font-weight:100">Thin<small>100</small></div>
   <div class="w" style="font-weight:200">ExtraLight<small>200</small></div>
