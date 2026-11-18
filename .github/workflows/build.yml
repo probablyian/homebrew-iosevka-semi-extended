@@ -19,15 +19,17 @@ permissions:
 concurrency:
   group: build
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    env:
-      GH_TOKEN: ${{ github.token }}
-    steps:
-      - uses: actions/checkout@v7
+env:
+  GH_TOKEN: ${{ github.token }}
 
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      version: ${{ steps.tag.outputs.version }}
+      skip: ${{ steps.tag.outputs.skip }}
+    steps:
       - name: Pick Iosevka tag
         id: tag
         env:
@@ -37,55 +39,95 @@ jobs:
           tag="${INPUT_TAG:-$(gh release view --repo be5invis/Iosevka --json tagName -q .tagName)}"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
-          if [ "$FORCE" != "true" ] && gh release view "$tag" > /dev/null 2>&1; then
+          if [ "$FORCE" != "true" ] && gh release view "$tag" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
             echo "Release $tag already exists"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
 
+  build:
+    needs: tag
+    if: needs.tag.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      matrix:
+        include:
+          - plan: IosevkaSemiExtended
+            prefix: Iosevka
+          - plan: IosevkaSS14SemiExtended
+            prefix: IosevkaSS14
+    steps:
       - uses: actions/checkout@v7
-        if: steps.tag.outputs.skip != 'true'
+
+      - uses: actions/checkout@v7
         with:
           repository: be5invis/Iosevka
-          ref: ${{ steps.tag.outputs.tag }}
+          ref: ${{ needs.tag.outputs.tag }}
           path: iosevka
 
       - uses: actions/setup-node@v7
-        if: steps.tag.outputs.skip != 'true'
         with:
           node-version: 22
 
       - name: Build fonts
-        if: steps.tag.outputs.skip != 'true'
         working-directory: iosevka
+        env:
+          PLAN: ${{ matrix.plan }}
         run: |
           sudo apt-get update -q
           sudo apt-get install -yq ttfautohint
           cp ../private-build-plans.toml .
           npm ci --no-audit --no-fund
-          npm run build -- ttf::IosevkaSemiExtended
+          npm run build -- "ttf::$PLAN"
 
-      - name: Package and release
-        if: steps.tag.outputs.skip != 'true'
+      - name: Package
         env:
-          TAG: ${{ steps.tag.outputs.tag }}
-          VERSION: ${{ steps.tag.outputs.version }}
+          PLAN: ${{ matrix.plan }}
+          PREFIX: ${{ matrix.prefix }}
+          VERSION: ${{ needs.tag.outputs.version }}
         run: |
-          zip="Iosevka-SemiExtended-$VERSION.zip"
           mkdir out
-          for f in iosevka/dist/IosevkaSemiExtended/TTF/*.ttf; do
+          for f in "iosevka/dist/$PLAN/TTF/"*.ttf; do
             name=$(basename "$f")
-            cp "$f" "out/Iosevka-${name#IosevkaSemiExtended-}"
+            cp "$f" "out/$PREFIX-${name#"$PLAN"-}"
           done
           cp iosevka/LICENSE.md out/
-          (cd out && zip -9 "$GITHUB_WORKSPACE/$zip" ./*)
-          unzip -l "$zip"
+          (cd out && zip -9 "$GITHUB_WORKSPACE/$PREFIX-SemiExtended-$VERSION.zip" ./*)
+          unzip -l "$PREFIX-SemiExtended-$VERSION.zip"
 
+      - uses: actions/upload-artifact@v7
+        with:
+          name: zip-${{ matrix.plan }}
+          path: ${{ matrix.prefix }}-SemiExtended-${{ needs.tag.outputs.version }}.zip
+
+  release:
+    needs: [tag, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: zip-*
+          merge-multiple: true
+          path: dist
+
+      - name: Release and bump casks
+        env:
+          TAG: ${{ needs.tag.outputs.tag }}
+          VERSION: ${{ needs.tag.outputs.version }}
+        run: |
           gh release delete "$TAG" --yes --cleanup-tag 2> /dev/null || true
-          gh release create "$TAG" "$zip" --title "Iosevka SemiExtended $VERSION" \
+          gh release create "$TAG" dist/*.zip --title "Iosevka SemiExtended $VERSION" \
             --notes "Built from [Iosevka $TAG](https://github.com/be5invis/Iosevka/releases/tag/$TAG) with [private-build-plans.toml]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/main/private-build-plans.toml)."
 
-          sha=$(shasum -a 256 "$zip" | cut -d' ' -f1)
-          sed -i -E "s/^  version \".*\"/  version \"$VERSION\"/; s/^  sha256 \".*\"/  sha256 \"$sha\"/" Casks/font-iosevka-semi-extended.rb
+          bump() {
+            sha=$(shasum -a 256 "dist/$2" | cut -d' ' -f1)
+            sed -i -E "s/^  version \".*\"/  version \"$VERSION\"/; s/^  sha256 \".*\"/  sha256 \"$sha\"/" "Casks/$1.rb"
+          }
+          bump font-iosevka-semi-extended "Iosevka-SemiExtended-$VERSION.zip"
+          bump font-iosevka-semi-extended-ss14 "IosevkaSS14-SemiExtended-$VERSION.zip"
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -am "font-iosevka-semi-extended $VERSION" && git push || echo "Cask already at $VERSION"
+          git commit -am "Iosevka SemiExtended casks $VERSION" && git push || echo "Casks already at $VERSION"

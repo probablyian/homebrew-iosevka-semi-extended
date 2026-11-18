@@ -8,3 +8,17 @@ exportGlyphNames = true
 shape = 548
 menu = 6
 css = "semi-expanded"
+
+# The release "IosevkaSS14" plan (JetBrains Mono style) from build-plans.toml, with only the SemiExtended width.
+[buildPlans.IosevkaSS14SemiExtended]
+family = "Iosevka SS14"
+exportGlyphNames = true
+noCvSs = true
+
+[buildPlans.IosevkaSS14SemiExtended.variants]
+inherits = "ss14"
+
+[buildPlans.IosevkaSS14SemiExtended.widths.SemiExtended]
+shape = 548
+menu = 6
+css = "semi-expanded"
