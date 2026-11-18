@@ -8,7 +8,7 @@
 brew install --cask probablyian/iosevka-semi-extended/font-iosevka-semi-extended
 ```
 
-The fonts install next to Homebrew's `font-iosevka` without clashing. Without Homebrew, download the zip from [Releases](../../releases) and copy the `.ttf` files to `~/Library/Fonts` (macOS) or `~/.local/share/fonts` (Linux, then run `fc-cache -f`).
+Set the font family to `Iosevka Semi-Extended`, which selects the SemiExtended Regular, Bold and Italic faces. The fonts install next to Homebrew's `font-iosevka` without clashing. Without Homebrew, download the zip from [Releases](../../releases) and copy the `.ttf` files to `~/Library/Fonts` (macOS) or `~/.local/share/fonts` (Linux, then run `fc-cache -f`).
 
 ## Stylistic sets
 
